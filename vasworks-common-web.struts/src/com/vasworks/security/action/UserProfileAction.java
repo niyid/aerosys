@@ -1,0 +1,178 @@
+/**
+ * 
+ */
+package com.vasworks.security.action;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
+import com.vasworks.entity.Organization;
+import com.vasworks.security.model.AppUser;
+import com.vasworks.security.service.UserService;
+import com.vasworks.service.EmailException;
+import com.vasworks.service.EmailService;
+import com.vasworks.service.TemplatingException;
+import com.vasworks.service.TemplatingService;
+
+/**
+ * @author developer
+ * 
+ */
+@SuppressWarnings("serial")
+public class UserProfileAction extends ActionSupport {
+	private UserService userService;
+	private TemplatingService templatingService;
+	private EmailService emailService;
+
+	private String email;
+	private String key;
+	private Long personnelId;
+	private Long organizationId;
+	
+	private Organization organization;
+
+	/**
+	 * 
+	 */
+	public UserProfileAction(UserService userService) {
+		this.userService = userService;
+	}
+
+	/**
+	 * @param templatingService the templatingService to set
+	 */
+	public void setTemplatingService(TemplatingService templatingService) {
+		this.templatingService = templatingService;
+	}
+
+	/**
+	 * @param emailService the emailService to set
+	 */
+	public void setEmailService(EmailService emailService) {
+		this.emailService = emailService;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return this.email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @return the key
+	 */
+	public String getKey() {
+		return this.key;
+	}
+
+	/**
+	 * @param key the key to set
+	 */
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public Long getPersonnelId() {
+		return personnelId;
+	}
+
+	public void setPersonnelId(Long personnelId) {
+		this.personnelId = personnelId;
+	}
+
+	public Long getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(Long organizationId) {
+		this.organizationId = organizationId;
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+
+	public String execute() {
+		return Action.SUCCESS;
+	}
+
+	public String requestPassword() {
+		AppUser user = userService.lookup(this.email);
+		if (user == null)
+			return Action.INPUT;
+
+		// get the request key
+		String key = userService.requestPassword(user);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("key", key);
+		data.put("user", user);
+		this.key = key;
+		String message = null;
+		try {
+			message = templatingService.fillTemplate("passwordrequest", data);
+		} catch (TemplatingException e) {
+			addActionError(e.getMessage());
+			LOG.error(e.getMessage());
+			LOG.error(e.getCause().getMessage());
+			return Action.INPUT;
+		}
+		try {
+			emailService.sendEmail(null, user.getMail(), getText("password.request.subject"), message);
+		} catch (EmailException e) {
+			addActionError("Could not send email. " + e.getMessage());
+			return Action.INPUT;
+		}
+		return Action.SUCCESS;
+	}
+
+	/**
+	 * Generate a new password and send it to user's email address
+	 * 
+	 * @return
+	 */
+	public String generatePassword() {
+		AppUser user = userService.lookup(this.email);
+		if (user == null)
+			return Action.INPUT;
+
+		String newPasword = null;
+		if (null != (newPasword = userService.generatePassword(user, this.key))) {
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("password", newPasword);
+			data.put("user", user);
+			String message = null;
+			try {
+				message = templatingService.fillTemplate("passwordgenerated", data);
+			} catch (TemplatingException e) {
+				addActionError(e.getMessage());
+				LOG.error(e.getMessage());
+				LOG.error(e.getCause().getMessage());
+				return Action.INPUT;
+			}
+			try {
+				emailService.sendEmail(null, user.getMail(), getText("password.generated.subject"), message);
+			} catch (EmailException e) {
+				addActionError("Could not send email. " + e.getMessage());
+				return Action.INPUT;
+			}
+			return Action.SUCCESS;
+		} else {
+			return Action.INPUT;
+		}
+	}
+
+}

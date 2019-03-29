@@ -1,0 +1,32 @@
+/**
+ * 
+ */
+package com.vasworks.security.model;
+
+/**
+ * Status of {@link #AppUser} record. The default status is {@link #ENABLED}, meaning the record is active in the database. Note that this does not relate to
+ * disabling/enabling user accounts!
+ * 
+ * As user records should not be permanently removed from the database, the status {@link #DELETED} is used.
+ * 
+ * @author aafolayan
+ * @author developer
+ * 
+ */
+public enum UserStatus {
+	DISABLED(0), ENABLED(1), DELETED(2);
+
+	@SuppressWarnings("unused")
+	private final Integer state;
+
+	UserStatus(Integer state) {
+		this.state = state;
+	}
+
+	public static void main(String args[]) {
+		for (UserStatus us : UserStatus.values()) {
+			System.out.println("value of user status could be: " + us.name());
+		}
+	}
+
+}

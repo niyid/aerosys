@@ -1,0 +1,71 @@
+package com.vasworks.aspect;
+
+import java.util.Date;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+
+import com.vasworks.entity.Auditable;
+
+@Aspect
+public class AuditAspect {
+
+    private static final Log LOG = LogFactory.getLog(AuditAspect.class);
+
+    @Pointcut("execution(void com.vasworks.service.DaoService.insert(..))")
+    void auditInsert() {
+    	
+    };
+
+    @Pointcut("execution(void com.vasworks.service.DaoService.update(..))")
+    void auditUpdate() {
+    	
+    };
+
+	@Around("auditInsert()")
+    public void handleInsert(ProceedingJoinPoint pjp) throws Throwable {
+    	LOG.debug("ProceedingJoinPoint: " + pjp);    	
+    	
+    	Object o = pjp.getArgs()[0];
+    	if(o instanceof Auditable) {        	
+        	Auditable entity = (Auditable) o;
+        	
+        	LOG.debug("Entity: " + entity);
+        	
+        	Long userId = (Long) pjp.getArgs()[1];
+        	
+        	LOG.debug("AppUser Id: " + userId);
+        	
+			entity.setCreatedDate(new Date());
+			entity.setCreatedBy(userId);
+    		
+    	}
+
+        pjp.proceed();
+    }
+
+	@Around("auditUpdate()")
+    public void handleUpdate(ProceedingJoinPoint pjp) throws Throwable {
+    	LOG.debug("ProceedingJoinPoint: " + pjp);    	
+    	
+    	Object o = pjp.getArgs()[0];
+    	if(o instanceof Auditable) {        	
+        	Auditable entity = (Auditable) o;
+        	
+        	LOG.debug("Entity: " + entity);
+        	
+        	Long userId = (Long) pjp.getArgs()[1];
+        	
+        	LOG.debug("AppUser Id: " + userId);
+        	
+			entity.setLastUpdated(new Date());
+			entity.setLastUpdatedBy(userId);    		
+    	}
+
+        pjp.proceed();
+    }
+}

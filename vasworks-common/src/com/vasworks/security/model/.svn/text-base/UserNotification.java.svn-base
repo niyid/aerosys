@@ -1,0 +1,140 @@
+/**
+ * projecttask.Struts Jan 30, 2010
+ */
+package com.vasworks.security.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
+
+import com.vasworks.entity.VersionedEntity;
+
+/**
+ * <p>
+ * The entity contains {@link User}'s subscription to application events.
+ * </p>
+ * <p>
+ * {@link #eventName} is the method name within a notification class
+ * </p>
+ * 
+ * @author developer
+ */
+@Entity
+public class UserNotification extends VersionedEntity {
+	private static final long serialVersionUID = -4995926281558627351L;
+	private User user;
+	private String eventName;
+	private String formatString;
+	private boolean subscribed = false;
+	private NotificationFrequency frequency = NotificationFrequency.WITHINAPPLICATION;
+	private NotificationPriority priority = NotificationPriority.NORMAL;
+
+	public enum NotificationFrequency {
+		WITHINAPPLICATION, INSTANT, DAILY, MONTHLY;
+	}
+
+	public enum NotificationPriority {
+		LOW, NORMAL, HIGH
+	}
+
+	/**
+	 * @return the user
+	 */
+	@ManyToOne(cascade = {}, optional = false)
+	public User getUser() {
+		return this.user;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	/**
+	 * @return the eventName
+	 */
+	@Column(length = 200, nullable = false)
+	public String getEventName() {
+		return this.eventName;
+	}
+
+	/**
+	 * @param eventName the eventName to set
+	 */
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+
+	/**
+	 * @return the formatString
+	 */
+	@Column(length = 1000, nullable = true)
+	public String getFormatString() {
+		return this.formatString;
+	}
+
+	/**
+	 * @param formatString the formatString to set
+	 */
+	public void setFormatString(String formatString) {
+		this.formatString = formatString;
+	}
+
+	/**
+	 * @return the subscribed
+	 */
+	public boolean isSubscribed() {
+		return this.subscribed;
+	}
+
+	/**
+	 * @param subscribed the subscribed to set
+	 */
+	public void setSubscribed(boolean subscribed) {
+		this.subscribed = subscribed;
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.eventName + (subscribed ? " subscribed" : " not subscribed");
+	}
+
+	/**
+	 * @return the frequency
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(length = 100)
+	public NotificationFrequency getFrequency() {
+		return this.frequency;
+	}
+
+	/**
+	 * @param frequency the frequency to set
+	 */
+	public void setFrequency(NotificationFrequency frequency) {
+		this.frequency = frequency;
+	}
+
+	/**
+	 * @return the priority
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(length = 100)
+	public NotificationPriority getPriority() {
+		return this.priority;
+	}
+
+	/**
+	 * @param priority the priority to set
+	 */
+	public void setPriority(NotificationPriority priority) {
+		this.priority = priority;
+	}
+}

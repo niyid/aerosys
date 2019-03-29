@@ -1,0 +1,237 @@
+package com.vasworks.service.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.vasworks.entity.Notification;
+import com.vasworks.security.model.AppUser;
+import com.vasworks.security.model.UserNotification.NotificationFrequency;
+import com.vasworks.security.model.UserNotification.NotificationPriority;
+import com.vasworks.service.UserNotificationService;
+import com.vasworks.util.PagedResult;
+import com.vasworks.util.StringUtil;
+
+/**
+ * <b>Local</b> {@link UserNotificationService} implemenation will use JPA to store and retrieve messages.
+ * 
+ * @author odada
+ */
+public class UserNotificationServiceImpl implements UserNotificationService {
+	private static final Log log = LogFactory.getLog(UserNotificationServiceImpl.class);
+
+	private EntityManager entityManager;
+
+	private JavaMail emailService;
+
+	public Notification findNotification(Long id) {
+		return entityManager.find(Notification.class, id);
+	}
+
+	/**
+	 * @param entityManager the entityManager to set
+	 */
+	@PersistenceContext
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	@Override
+	@Transactional
+	public int deleteAllMessages(AppUser user) {
+		log.debug("deleteAllMessages " + user);
+
+		return entityManager.createQuery("delete from Notification n where n.subscriber=:user").setParameter("user", user).executeUpdate();
+	}
+
+	@Override
+	@Transactional
+	public void deleteMessage(Notification notification) {
+		log.debug("deleteMessage " + notification);
+
+		entityManager.remove(notification);
+	}
+
+	@Override
+	@Transactional
+	public void deleteMessage(Long id) {
+		log.debug("deleteMessage " + id);
+
+		try {
+			Notification notification = entityManager.find(Notification.class, id);
+
+			if (notification != null) {
+				entityManager.remove(notification);
+			}
+		} catch (Exception e) {
+			log.info("No notification with id " + id);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public PagedResult<Notification> listMessages(AppUser user, int startAt, int maxResults, boolean ascending) {
+		log.debug("listMessages " + user + " " + startAt + " " + maxResults + " " + ascending);
+
+		String orderBy = "order by id ASC";
+		if (!ascending) {
+			orderBy = "order by id DESC";
+		}
+
+		PagedResult<Notification> result = new PagedResult<Notification>(startAt, maxResults);
+		result.setResults(entityManager.createQuery("from Notification n where n.subscriber=:user " + orderBy).setParameter("user", user).getResultList());
+		result.setTotalHits((Long) entityManager.createQuery("SELECT count(n) FROM Notification n where n.subscriber=:user").setParameter("user", user)
+				.getSingleResult());
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public PagedResult<Notification> listUnread(AppUser user, int startAt, int maxResults, boolean ascending) {
+		log.debug("listUnread " + user + " " + startAt + " " + maxResults + " " + ascending);
+
+		String orderBy = "order by id ASC";
+		if (!ascending) {
+			orderBy = "order by id DESC";
+		}
+
+		PagedResult<Notification> result = new PagedResult<Notification>(startAt, maxResults);
+		result.setResults(entityManager.createQuery("from Notification n where n.subscriber=:user and n.read=false " + orderBy).setParameter("user", user)
+				.getResultList());
+		result.setTotalHits((Long) entityManager.createQuery("SELECT count(n) FROM Notification n where n.subscriber=:user and n.read=false").setParameter(
+				"user", user).getSingleResult());
+
+		return result;
+	}
+
+	@Override
+	@Transactional
+	public void markAsRead(Notification notification) {
+		log.debug("markAsRead " + notification);
+
+		notification.setRead(true);
+		entityManager.merge(notification);
+	}
+
+	@Override
+	@Transactional
+	public void markAsUnread(Notification notification) {
+		log.debug("markAsUnread " + notification);
+
+		notification.setRead(false);
+		entityManager.merge(notification);
+	}
+	
+	/**
+	 * @see com.vasworks.service.UserNotificationService#sendBroadcast(java.lang.String, java.util.List, java.lang.String, java.lang.String)
+	 */
+	@Override
+	@Transactional
+	public void sendBroadcast(String appName, List<AppUser> users, String notificationTitle, String notificationMsg) {
+		sendBroadcast(appName, users, notificationTitle, notificationMsg, NotificationFrequency.WITHINAPPLICATION, NotificationPriority.NORMAL);
+	}
+
+
+	/**
+	 * @see com.vasworks.service.UserNotificationSender#sendBroadcast(java.lang.String, java.util.List, java.lang.String, java.lang.String, com.vasworks.security.model.UserNotification.NotificationFrequency, com.vasworks.security.model.UserNotification.NotificationPriority)
+	 */
+	@Override
+	@Transactional
+	public void sendBroadcast(String appName, List<AppUser> users, String notificationTitle, String notificationMsg, NotificationFrequency frequency,
+			NotificationPriority priority) {
+		log.debug("sendBroadcast " + appName + " " + notificationTitle + " " + notificationMsg);
+
+		log.debug("No of users receiving broadcast: " + users.size());
+
+		for (AppUser subscriber : users) {
+			sendNotification(appName, subscriber, notificationTitle, notificationMsg, frequency, priority);
+		}
+	}
+	
+	@Override
+	@Transactional
+	public void sendBroadcast(String appName, AppUser user, String notificationTitle, String notificationMsg) {
+		sendBroadcast(appName, user, notificationTitle, notificationMsg, NotificationFrequency.WITHINAPPLICATION, NotificationPriority.NORMAL);
+	}
+	
+	/**
+	 * @see com.vasworks.service.UserNotificationSender#sendBroadcast(java.lang.String, com.vasworks.security.model.AppUser, java.lang.String, java.lang.String, com.vasworks.security.model.UserNotification.NotificationFrequency, com.vasworks.security.model.UserNotification.NotificationPriority)
+	 */
+	@Override
+	public void sendBroadcast(String appName, AppUser user, String notificationTitle, String notificationMsg, NotificationFrequency frequency,
+			NotificationPriority priority) {
+		if (user == null) {
+			log.warn("Subscriber should not be null.");
+			return;
+		}
+		log.debug("sendBroadcast " + user.getDisplayName() + " " + appName + " " + notificationTitle + " " + notificationMsg);
+
+		sendNotification(appName, user, notificationTitle, notificationMsg, frequency, priority);
+	}
+
+	/**
+	 * @param appName
+	 * @param subscriber
+	 * @param notificationTitle
+	 * @param notificationMsg
+	 */
+
+	@Transactional
+	private void sendNotification(String appName, AppUser subscriber, String subject, String body, NotificationFrequency frequency, NotificationPriority priority) {
+		log.debug("sendNotification " + appName + " " + subscriber.getDisplayName() + " " + subject);
+
+		Notification notif = new Notification();
+		notif.setOriginAppName(appName);
+		notif.setTitle(subject);
+		notif.setMessage(body);
+		notif.setSubscriber(subscriber);
+		
+		if (notif.getTitle()==null || notif.getTitle().length()==0)
+			notif.setTitle(StringUtil.shortenText(notif.getMessage(), 50, true, true));
+
+		entityManager.persist(notif);
+	}
+
+	public long countMessages(AppUser user) {
+		log.debug("countMessages " + user);
+
+		return (Long) entityManager.createQuery("SELECT count(n) FROM Notification n where n.subscriber=:user").setParameter("user", user).getSingleResult();
+	}
+
+	public long countUnread(AppUser user) {
+		log.debug("countUnread " + user);
+
+		return (Long) entityManager.createQuery("SELECT count(n) FROM Notification n where n.subscriber=:user and n.read=false").setParameter("user", user)
+				.getSingleResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Notification> listAllMessages(AppUser user) {
+		log.debug("listAllMessages " + user);
+
+		return entityManager.createQuery("from Notification n where n.subscriber=:user").setParameter("user", user).getResultList();
+	}
+
+	public void setEmailService(JavaMail emailService) {
+		this.emailService = emailService;
+	}
+
+	public JavaMail getEmailService() {
+		return emailService;
+	}
+
+	public void updateUser(AppUser user) {
+		log.debug("updateUser " + user);
+
+		entityManager.merge(user);
+	}
+}

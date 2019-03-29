@@ -1,0 +1,172 @@
+/**
+ * 
+ */
+package com.vasworks.security.service;
+
+import java.util.List;
+
+import com.vasworks.security.model.User;
+import com.vasworks.security.model.UserSupervisor;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface UserSupervisionService.
+ * 
+ * @author aafolayan
+ */
+public interface UserSupervisionService {
+
+	/**
+	 * Get list of users that have delegated access to this user.
+	 * 
+	 * @param user the user
+	 * @param application the application
+	 * 
+	 * @return the supervised users
+	 */
+	@Deprecated
+	public List<User> getSupervisedUsers(User user, String application);
+	
+	/**
+	 * Get list of users that have delegated access to this user.
+	 * 
+	 * @param user the user
+	 * @param application the application
+	 * 
+	 * @return the supervised users
+	 */
+	public List<User> getSupervisedUsers(User user);
+
+	/**
+	 * Get list of users that this user has delegated access to.
+	 * 
+	 * @param user the user
+	 * @param application the application
+	 * 
+	 * @return the supervisors
+	 */
+	@Deprecated
+	public List<User> getSupervisors(User user, String application);
+	
+	/**
+	 * Get list of users that this user has delegated access to.
+	 * 
+	 * @param user the user
+	 * @param application the application
+	 * 
+	 * @return the supervisors
+	 */
+	public List<User> getSupervisors(User user);
+
+	/**
+	 * Delegate access to another user.
+	 * 
+	 * @param owner the owner
+	 * @param application the application
+	 * @param supervisor the supervisor
+	 * 
+	 * @throws UserServiceException the user service exception
+	 */
+	@Deprecated
+	void addSupervisor(User owner, User supervisor, String application) throws UserServiceException;
+	
+
+	/**
+	 * Delegate access to another user.
+	 * 
+	 * @param owner the owner
+	 * @param application the application
+	 * @param supervisor the supervisor
+	 * 
+	 * @throws UserServiceException the user service exception
+	 */
+	void addSupervisor(User owner, User supervisor) throws UserServiceException;
+
+	/**
+	 * Delete supervisor.
+	 * 
+	 * @param user the user
+	 * @param supervisor the supervisor
+	 * @param application the application
+	 * 
+	 * @throws UserServiceException the user service exception
+	 */
+	@Deprecated
+	void deleteSupervisor(User user, User supervisor, String application) throws UserServiceException;
+	
+	/**
+	 * Delete supervisor.
+	 * 
+	 * @param user the user
+	 * @param supervisor the supervisor
+	 * @param application the application
+	 * 
+	 * @throws UserServiceException the user service exception
+	 */
+	void deleteSupervisor(User user, User supervisor) throws UserServiceException;
+
+
+	/**
+	 * Find supervisor.
+	 * 
+	 * @param user the user
+	 * @param supervisor the supervisor
+	 * @param application the application
+	 * 
+	 * @return the user supervisor
+	 * 
+	 * @throws UserServiceException the user service exception
+	 */
+	@Deprecated
+	UserSupervisor findSupervisor(User user, User supervisor, String application) throws UserServiceException;
+	
+	/**
+	 * Find supervisor.
+	 * 
+	 * @param user the user
+	 * @param supervisor the supervisor
+	 * @param application the application
+	 * 
+	 * @return the user supervisor
+	 * 
+	 * @throws UserServiceException the user service exception
+	 */
+	UserSupervisor findSupervisor(User user, User supervisor) throws UserServiceException;
+
+	/**
+	 * Switch user.
+	 * 
+	 * @param user the user
+	 * @param supervisor the supervisor
+	 */
+	void switchUser(User user, UserSupervisor supervisor);
+
+	/**
+	 * Unswitch user.
+	 * 
+	 * @param user the user
+	 */
+	void unswitchUser(User user);
+
+	/**
+	 * Get a list of all supervised users (no matter who the supervisor is) for an application.
+	 * 
+	 * @param application the application
+	 * 
+	 * @return the supervised users
+	 */
+	@Deprecated
+	public List<User> getSupervisedUsers(String application);
+	
+
+	/**
+	 * Get a list of all supervised users (no matter who the supervisor is) for an application.
+	 * 
+	 * @param application the application
+	 * 
+	 * @return the supervised users
+	 */
+	public List<User> getSupervisedUsers();
+
+
+}

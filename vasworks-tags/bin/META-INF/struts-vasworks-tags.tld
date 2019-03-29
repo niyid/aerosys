@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+	<tlib-version>2.2.3</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>vasworks</short-name>
+	<uri>/struts-vasworks-tags</uri>
+	<display-name>"Struts VasWorks Tags"</display-name>
+	<description><![CDATA["Struts tags for VasWorks stuffs."]]></description>
+
+	
+	<tag>
+		<name>quicksaver</name>
+		<tag-class>com.vasworks.tags.views.jsp.ui.QuickSaverTag</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[Renders quick-saver element]]></description>
+		<attribute>
+			<name>accesskey</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html accesskey attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css class to use for element]]></description>
+		</attribute>
+		<attribute>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Used as HTML id attribute]]></description>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Label expression used for rendering a element specific label]]></description>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Name of the field that contains the date value]]></description>
+		</attribute>
+		<attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html tabindex attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Preset the value of input element.]]></description>
+		</attribute>
+		<attribute>
+			<name>qsaveLog</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[ID of element that will contain the quick-save log]]></description>
+		</attribute>
+		<attribute>
+			<name>action</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[Quick-save action]]></description>
+		</attribute>
+		<attribute>
+			<name>entityId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[ID of entity to save]]></description>
+		</attribute>
+		<attribute>
+			<name>entityClass</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[Type of entity to save (class short name or long name)]]></description>
+		</attribute>
+		<attribute>
+			<name>property</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[The name of the property whose value is being updated]]></description>
+		</attribute>
+		<attribute>
+			<name>namespace</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[Action namespace]]></description>
+		</attribute>
+		<attribute>
+			<name>queryParams</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[Extra query string]]></description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>datepicker</name>
+		<tag-class>com.vasworks.tags.views.jsp.ui.DatePickerTag</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[Renders datepicker]]></description>
+		<attribute>
+			<name>accesskey</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html accesskey attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>autoClose</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Hide datepicker when a date is selected. Applies only when 'mode' is 'input' or 'label']]></description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css class to use for element]]></description>
+		</attribute>
+		<attribute>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>endDate</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Last available date in the calendar set]]></description>
+		</attribute>
+		<attribute>
+			<name>formatFunction</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Function used to format the selected value. The value returned by this function will be displayed on the input field. When the page loads an String will be passed to this function with the value specified on the 'value' attribute.When the user selects a value using the datepicker a JavaScript object of type Date will be passed. Applies only when 'mode' is 'input' or 'label']]></description>
+		</attribute>
+		<attribute>
+			<name>format</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Date rendering format]]></description>
+		</attribute>
+		<attribute>
+			<name>iconCssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Css class of icon used for the dropdown image. Applies only when 'mode' is 'input' or 'label']]></description>
+		</attribute>
+		<attribute>
+			<name>iconPath</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[URL of icon used for the dropdown image. Applies only when 'mode' is 'input' or 'label']]></description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Used as HTML id attribute]]></description>
+		</attribute>
+		<attribute>
+			<name>javascriptTooltip</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Use JavaScript to generate tooltips]]></description>
+		</attribute>
+		<attribute>
+			<name>key</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the key (name, value, label) for this particular component]]></description>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Label expression used for rendering a element specific label]]></description>
+		</attribute>
+		<attribute>
+			<name>labelSeparator</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[String that will be appended to the labe]]></description>
+		</attribute>
+		<attribute>
+			<name>labelposition</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Define label position of form element (top/left)]]></description>
+		</attribute>
+		<attribute>
+			<name>language</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Language name(2 lowercase characters) to be used on the datepicker. This language must also be specified on the attribute 'languages' in the head tag.]]></description>
+		</attribute>
+		<attribute>
+			<name>mode</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Sets how the datepicker is to be rendered, should be one of 'input', 'static', 'label']]></description>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Name of the field that will cotainf the date value]]></description>
+		</attribute>
+		<attribute>
+			<name>required</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[If set to true, the rendered element will indicate that input is required]]></description>
+		</attribute>
+		<attribute>
+			<name>requiredposition</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Define required position of required form element (left|right)]]></description>
+		</attribute>
+		<attribute>
+			<name>startDate</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[First available date in the calendar set]]></description>
+		</attribute>
+		<attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html tabindex attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>template</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The template (other than default) to use for rendering the element]]></description>
+		</attribute>
+		<attribute>
+			<name>templateDir</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The template directory.]]></description>
+		</attribute>
+		<attribute>
+			<name>theme</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The theme (other than default) to use for rendering the element]]></description>
+		</attribute>
+		<attribute>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html title attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>tooltip</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the tooltip of this particular component]]></description>
+		</attribute>
+		<attribute>
+			<name>tooltipConfig</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Deprecated. Use individual tooltip configuration attributes instead.]]></description>
+		</attribute>
+		<attribute>
+			<name>tooltipCssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[CSS class applied to JavaScrip tooltips]]></description>
+		</attribute>
+		<attribute>
+			<name>tooltipDelay</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Delay in milliseconds, before showing JavaScript tooltips ]]></description>
+		</attribute>
+		<attribute>
+			<name>tooltipIconPath</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Icon path used for image that will have the tooltip]]></description>
+		</attribute>
+		<attribute>
+			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Preset the value of input element.]]></description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>autocompleter</name>
+		<tag-class>com.vasworks.tags.views.jsp.ui.AutocompleterTag</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[Renders autocompleter]]></description>
+		<attribute>
+			<name>accesskey</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html accesskey attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>autoClose</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Hide datepicker when a date is selected. Applies only when 'mode' is 'input' or 'label']]></description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css class to use for element]]></description>
+		</attribute>
+		<attribute>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Used as HTML id attribute]]></description>
+		</attribute>
+		<attribute>
+			<name>javascriptTooltip</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Use JavaScript to generate tooltips]]></description>
+		</attribute>
+		<attribute>
+			<name>key</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the key (name, value, label) for this particular component]]></description>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Label expression used for rendering a element specific label]]></description>
+		</attribute>
+		<attribute>
+			<name>labelSeparator</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[String that will be appended to the labe]]></description>
+		</attribute>
+		<attribute>
+			<name>labelposition</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Define label position of form element (top/left)]]></description>
+		</attribute>
+		<attribute>
+			<name>language</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Language name(2 lowercase characters) to be used on the datepicker. This language must also be specified on the attribute 'languages' in the head tag.]]></description>
+		</attribute>
+		<attribute>
+			<name>mode</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Sets how the datepicker is to be rendered, should be one of 'input', 'static', 'label']]></description>
+		</attribute>
+		<attribute>
+			<name>url</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[SMDMethod URL]]></description>
+		</attribute>
+		<attribute>
+			<name>listKey</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[Sets how the datepicker is to be rendered, should be one of 'input', 'static', 'label']]></description>
+		</attribute>
+		<attribute>
+			<name>listValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[Sets how the datepicker is to be rendered, should be one of 'input', 'static', 'label']]></description>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Name of the field that will cotainf the date value]]></description>
+		</attribute>
+		<attribute>
+			<name>required</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[If set to true, the rendered element will indicate that input is required]]></description>
+		</attribute>
+		<attribute>
+			<name>requiredposition</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Define required position of required form element (left|right)]]></description>
+		</attribute>
+		<attribute>
+			<name>startDate</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[First available date in the calendar set]]></description>
+		</attribute>
+		<attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html tabindex attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>template</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The template (other than default) to use for rendering the element]]></description>
+		</attribute>
+		<attribute>
+			<name>templateDir</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The template directory.]]></description>
+		</attribute>
+		<attribute>
+			<name>theme</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The theme (other than default) to use for rendering the element]]></description>
+		</attribute>
+		<attribute>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html title attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>tooltip</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the tooltip of this particular component]]></description>
+		</attribute>
+		<attribute>
+			<name>tooltipConfig</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Deprecated. Use individual tooltip configuration attributes instead.]]></description>
+		</attribute>
+		<attribute>
+			<name>tooltipCssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[CSS class applied to JavaScrip tooltips]]></description>
+		</attribute>
+		<attribute>
+			<name>tooltipDelay</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Delay in milliseconds, before showing JavaScript tooltips ]]></description>
+		</attribute>
+		<attribute>
+			<name>tooltipIconPath</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Icon path used for image that will have the tooltip]]></description>
+		</attribute>
+		<attribute>
+			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Preset the value of input element.]]></description>
+		</attribute>
+		<attribute>
+			<name>displayValue</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Preset the value of input element.]]></description>
+		</attribute>
+		<attribute>
+			<name>method</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[SMD method to invoke]]></description>
+		</attribute>
+		<attribute>
+			<name>submitTextTo</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Submit autocompleter text value with this HTML form name]]></description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>text</name>
+		<tag-class>com.vasworks.tags.views.jsp.ui.TextTag</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[Renders trimmed down text]]></description>		
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Preset the value of input element.]]></description>
+		</attribute>
+		<attribute>
+			<name>maxLength</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Max length of text left after trimming. Defaults to 100.]]></description>
+		</attribute>
+		<attribute>
+			<name>removeHTML</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Should text be stripped of HTML tags before trimming.]]></description>
+		</attribute>
+		<attribute>
+			<name>addDots</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Add dots?.]]></description>
+		</attribute>	
+	</tag>
+	
+	<tag>
+		<name>fileupload</name>
+		<tag-class>com.vasworks.tags.views.jsp.ui.FileUploadTag</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[Renders file uploader]]></description>
+		<attribute>
+			<name>accesskey</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html accesskey attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css class to use for element]]></description>
+		</attribute>
+		<attribute>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Used as HTML id attribute]]></description>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Label expression used for rendering a element specific label]]></description>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Name of the field that will cotainf the date value]]></description>
+		</attribute>
+		<attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html tabindex attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Preset the value of input element.]]></description>
+		</attribute>
+		<attribute>
+			<name>uploadLog</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[ID of element that will contain the upload log]]></description>
+		</attribute>
+		<attribute>
+			<name>action</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[File upload action]]></description>
+		</attribute>
+		<attribute>
+			<name>namespace</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[Action namespace]]></description>
+		</attribute>
+		<attribute>
+			<name>queryParams</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[Extra query string]]></description>
+		</attribute>
+	</tag>
+	
+	
+	<tag>
+		<name>filedropzone</name>
+		<tag-class>com.vasworks.tags.views.jsp.ui.FileDropZoneTag</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[Renders file uploader]]></description>
+		<attribute>
+			<name>accesskey</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html accesskey attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css class to use for element]]></description>
+		</attribute>
+		<attribute>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+		</attribute>
+		<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html disabled attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Used as HTML id attribute]]></description>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Label expression used for rendering a element specific label]]></description>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Name of the field that will cotainf the date value]]></description>
+		</attribute>
+		<attribute>
+			<name>tabindex</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Set the html tabindex attribute on rendered html element]]></description>
+		</attribute>
+		<attribute>
+			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Preset the value of input element.]]></description>
+		</attribute>
+		<attribute>
+			<name>uploadLog</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[ID of element that will contain the upload log]]></description>
+		</attribute>
+		<attribute>
+			<name>action</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[File upload action]]></description>
+		</attribute>
+		<attribute>
+			<name>namespace</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[Action namespace]]></description>
+		</attribute>
+		<attribute>
+			<name>queryParams</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[Extra query string]]></description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>collapse</name>
+		<tag-class>com.vasworks.tags.views.jsp.ui.CollapseTag</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[Renders collapsible element]]></description>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css class to use for element]]></description>
+		</attribute>
+		<attribute>
+			<name>cssStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[The css style definitions for element to use]]></description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Used as HTML id attribute]]></description>
+		</attribute>
+		<attribute>
+			<name>heading</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Heading text rendered when open. Defaults to "Hide..."]]></description>
+		</attribute>
+		<attribute>
+			<name>closedHeading</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Heading text rendered when collapsed. Defaults to "Show details..."]]></description>
+		</attribute>
+		<attribute>
+			<name>collapsed</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Is collapsed by default? Defaults to true]]></description>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>disksize</name>
+		<tag-class>com.vasworks.tags.views.jsp.ui.DiskSizeTag</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[Renders disk size in human readable format]]></description>		
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Disk size value to convert to human readable.]]></description>
+		</attribute>
+		<attribute>
+			<name>blockSize</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Block size. Defaults to 1024.]]></description>
+		</attribute>
+	</tag>
+	
+		
+	<tag>
+		<name>date</name>
+		<tag-class>com.vasworks.tags.views.jsp.ui.DateTag</tag-class>
+		<body-content>JSP</body-content>
+		<description><![CDATA[Render dates in appropriate format, locale and timezone]]></description>		
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Date or Calendar object.]]></description>
+		</attribute>
+		<attribute>
+			<name>timezone</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Timezone.]]></description>
+		</attribute>
+		<attribute>
+			<name>format</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Format.]]></description>
+		</attribute>
+		<attribute>
+			<name>nice</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[Use nice format.]]></description>
+		</attribute>
+		
+		
+	</tag>
+	
+</taglib>

@@ -1,0 +1,187 @@
+/**
+ * projecttask.Struts Jan 30, 2010
+ */
+package com.vasworks.struts;
+
+import java.util.IllegalFormatException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.vasworks.annotation.Notification;
+import com.vasworks.notifications.ApplicationEventNotification;
+import com.vasworks.security.model.AppUser;
+import com.vasworks.security.model.UserNotification;
+import com.vasworks.service.DaemonService;
+import com.vasworks.service.NotificationSubscriptionService;
+import com.vasworks.service.UserNotificationSender;
+
+/**
+ * 
+ * @author developer
+ */
+public class ApplicationNotificationsImpl extends DaemonService implements ApplicationNotifications {
+	private static final String AUTHENTICATION_FAILED = "Authentication failed with error: %1$s";
+	private static final String USER_LOGGED_IN = "AppUser %1$s logged in.";
+	private static final String USER_LOGGING_OUT = "AppUser %1$s logging out.";
+	private static final String USER_SWITCHED_TO = "AppUser %1$s switched to %2$s.";
+	private static final String USER_SWITCHED_BACK = "AppUser %1$s switched back from %2$s.";
+	private static final Log LOG = LogFactory.getLog(ApplicationNotificationsImpl.class);
+	private NotificationSubscriptionService subscriptionService;
+	private Queue<ApplicationEventNotification> incomingQueue = new LinkedList<ApplicationEventNotification>();
+	protected UserNotificationSender notificationSender = null;
+
+	/**
+	 * @param notificationSender
+	 * 
+	 */
+	public ApplicationNotificationsImpl(UserNotificationSender notificationSender, NotificationSubscriptionService subscriptionService) {
+		this.notificationSender = notificationSender;
+		this.subscriptionService = subscriptionService;
+		start("Application notifications");
+	}
+
+	/**
+	 * @param eventName
+	 * @param subject
+	 * @param defaultFormat
+	 * @param params
+	 */
+	protected void sendNotification(String eventName, String subject, String defaultFormat, Object... params) {
+		LOG.info("Sending : " + eventName + " as BROADCAST");
+		ApplicationEventNotification eventNotification = new ApplicationEventNotification(eventName, subject, defaultFormat, params);
+		enqueue(eventNotification);
+	}
+
+	/**
+	 * @param eventName
+	 * @param allowedSubscribers
+	 * @param subject
+	 * @param defaultFormat
+	 * @param params
+	 */
+	protected void sendNotifications(String eventName, AppUser singleSubscriber, String subject, String defaultFormat, Object... params) {
+		LOG.info("Sending : " + eventName + " as SINGLE to " + singleSubscriber);
+		ApplicationEventNotification eventNotification = new ApplicationEventNotification(eventName, singleSubscriber, subject, defaultFormat, params);
+		enqueue(eventNotification);
+	}
+
+	/**
+	 * @param eventName
+	 * @param allowedSubscribers
+	 * @param subject
+	 * @param defaultFormat
+	 * @param params
+	 */
+	protected void sendNotifications(String eventName, List<AppUser> allowedSubscribers, String subject, String defaultFormat, Object... params) {
+		LOG.info("Sending : " + eventName + " as MULTIPLE to " + allowedSubscribers.size());
+		ApplicationEventNotification eventNotification = new ApplicationEventNotification(eventName, allowedSubscribers, subject, defaultFormat, params);
+		enqueue(eventNotification);
+	}
+
+	private synchronized void enqueue(ApplicationEventNotification eventNotification) {
+		LOG.debug("Entered enqueue");
+		synchronized (this.incomingQueue) {
+			LOG.debug("Got incomingqueue");
+			incomingQueue.add(eventNotification);
+		}
+		LOG.debug("Notfiying all");
+		notifyAll();
+	}
+
+	/**
+	 * @see com.vasworks.service.DaemonService#businessMethod()
+	 */
+	@Override
+	protected void businessMethod() {
+		ApplicationEventNotification eventNotification = null;
+		do {
+			synchronized (this.incomingQueue) {
+				eventNotification = this.incomingQueue.poll();
+			}
+			if (eventNotification != null)
+				processNotification(eventNotification);
+
+		} while (eventNotification != null);
+	}
+
+	/**
+	 * @param eventNotification
+	 */
+	private void processNotification(ApplicationEventNotification eventNotification) {
+		LOG.debug("Processing Notification of type " + eventNotification.getNotiticationType());
+		List<UserNotification> userNotifications = this.subscriptionService.getUserNotifications(eventNotification.getEventName(), eventNotification
+				.getNotiticationType(), eventNotification.getAllowedSubscribers());
+		if (userNotifications == null || userNotifications.size() == 0) {
+			LOG.debug("No subscriptions for " + eventNotification.getEventName());
+			return;
+		}
+
+		for (UserNotification userNotification : userNotifications) {
+			LOG.debug("Sending message to " + userNotification.getUser());
+
+			String userFormatString = userNotification.getFormatString();
+			String notificationMsg = null;
+
+			if (userFormatString != null) {
+				try {
+					notificationMsg = String.format(userFormatString, eventNotification.getParams());
+				} catch (IllegalFormatException e) {
+					LOG.error("AppUser " + userNotification.getUser() + " is using a faulty format string: " + userFormatString);
+					notificationMsg = String.format(eventNotification.getDefaultFormat(), eventNotification.getParams());
+				}
+			} else {
+				notificationMsg = String.format(eventNotification.getDefaultFormat(), eventNotification.getParams());
+			}
+			notificationSender.sendBroadcast(null, userNotification.getUser(), eventNotification.getSubject(), notificationMsg);
+		}
+	}
+
+	/**
+	 * @see com.vasworks.struts.ApplicationNotifications#authenticationFailed(java.lang.String)
+	 */
+	@Override
+	@Notification(defaultFormat = AUTHENTICATION_FAILED, requiredRoles = { "ROLE_ADMIN" })
+	public void authenticationFailed(String message) {
+		sendNotification("authenticationFailed", null, AUTHENTICATION_FAILED, message);
+	}
+
+	/**
+	 * @see com.vasworks.struts.ApplicationNotifications#userLoggedIn(com.vasworks.security.model.AppUser)
+	 */
+	@Override
+	@Notification(defaultFormat = USER_LOGGED_IN, requiredRoles = { "ROLE_ADMIN" })
+	public void userLoggedIn(AppUser principal) {
+		sendNotification("userLoggedIn", null, USER_LOGGED_IN, principal.toString());
+	}
+
+	/**
+	 * @see com.vasworks.struts.ApplicationNotifications#userLoggingOut(com.vasworks.security.model.AppUser)
+	 */
+	@Override
+	@Notification(defaultFormat = USER_LOGGING_OUT, requiredRoles = { "ROLE_ADMIN" })
+	public void userLoggingOut(AppUser principal) {
+		sendNotification("userLoggingOut", null, USER_LOGGING_OUT, principal.toString());
+	}
+
+	/**
+	 * @see com.vasworks.struts.ApplicationNotifications#userSwitched(com.vasworks.security.model.AppUser, com.vasworks.security.model.AppUser)
+	 */
+	@Override
+	@Notification(defaultFormat = USER_SWITCHED_TO, requiredRoles = { "ROLE_ADMIN" })
+	public void userSwitched(AppUser principal, AppUser delegatedUser) {
+		sendNotification("userSwitched", null, USER_SWITCHED_TO, principal.toString(), delegatedUser.toString());
+	}
+
+	/**
+	 * @see com.vasworks.struts.ApplicationNotifications#userUnswitched(com.vasworks.security.model.AppUser, com.vasworks.security.model.AppUser)
+	 */
+	@Override
+	@Notification(defaultFormat = USER_SWITCHED_BACK, requiredRoles = { "ROLE_ADMIN" })
+	public void userUnswitched(AppUser principal, AppUser delegatedUser) {
+		sendNotification("userUnswitched", null, USER_SWITCHED_BACK, principal.toString(), delegatedUser.toString());
+	}
+}

@@ -1,0 +1,1 @@
+<#if parameters.humanReadable??>${parameters.humanReadable}<#elseif parameters.value??>${parameters.value} B</#if>

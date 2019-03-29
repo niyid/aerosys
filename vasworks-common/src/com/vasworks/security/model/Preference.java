@@ -1,0 +1,89 @@
+package com.vasworks.security.model;
+
+import java.math.BigDecimal;
+
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.vasworks.entity.IPreference;
+import com.vasworks.entity.MySqlBaseEntity;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.INTEGER, name = "preferenceType")
+public abstract class Preference extends MySqlBaseEntity implements IPreference {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 643431650413163536L;
+
+	private AppUser user;
+
+	private String description;
+
+	private String preferenceKey;
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setUser(AppUser user) {
+		this.user = user;
+	}
+
+	@ManyToOne(cascade = {})
+	@JoinColumn(name = "userId")
+	public AppUser getUser() {
+		return user;
+	}
+
+	public void setPreferenceKey(String preferenceKey) {
+		this.preferenceKey = preferenceKey;
+	}
+
+	public String getPreferenceKey() {
+		return preferenceKey;
+	}
+
+	public static Preference newInstance(String key, Object value) {
+		Preference p = null;
+		if (value instanceof String) {
+			p = new StringPreference((String) value);
+		} else if (value instanceof Boolean) {
+			p = new BooleanPreference((Boolean) value);
+		} else if (value instanceof Integer) {
+			p = new IntegerPreference((Integer) value);
+		} else if (value instanceof Long) {
+			p = new LongPreference((Long) value);
+		} else if (value instanceof Float) {
+			p = new DoublePreference(((Float) value).doubleValue());
+		} else if (value instanceof Double) {
+			p = new DoublePreference((Double) value);
+		} else if (value instanceof Character) {
+			p = new CharacterPreference((Character) value);
+		} else if (value instanceof BigDecimal) {
+			p = new NumberPreference((BigDecimal) value);
+		}
+
+		if (p != null) {
+			p.setPreferenceKey(key);
+		}
+
+		return p;
+	}
+
+	@Override
+	public String toString() {
+		return getPreferenceKey() + "=" + getPreferenceValue();
+	}
+}

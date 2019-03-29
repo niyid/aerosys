@@ -1,0 +1,190 @@
+/**
+ * projecttask.Struts Feb 1, 2010
+ */
+package com.vasworks.service.impl;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.vasworks.annotation.Notification;
+import com.vasworks.notifications.ApplicationEventNotification.EventNotificationType;
+import com.vasworks.security.Authorize;
+import com.vasworks.security.model.User;
+import com.vasworks.security.model.UserNotification;
+import com.vasworks.service.NotificationSubscriptionService;
+
+/**
+ * @author developer
+ * 
+ */
+public class NotificationSubscriptionServiceImpl implements NotificationSubscriptionService {
+	private static final Log LOG = LogFactory.getLog(NotificationSubscriptionServiceImpl.class);
+	private EntityManager entityManager;
+	private String notificationsClass;
+	private List<Method> availableNotifications = null;
+
+	/**
+	 * @param notificationsClass
+	 * 
+	 */
+	public NotificationSubscriptionServiceImpl(String notificationsClass) {
+		this.notificationsClass = notificationsClass;
+	}
+
+	/**
+	 * @param entityManager the entityManager to set
+	 */
+	@PersistenceContext
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	/**
+	 * @see com.devworks.projecttask.service.NotificationSubscriptionService#listAvailableNotifications(com.vasworks.security.model.User)
+	 */
+	@Override
+	public List<Method> listAvailableNotifications(User user) {
+		ArrayList<Method> methods = new ArrayList<Method>(listAvailableNotifications());
+		// filter out ones that are not allowed
+		for (int i = methods.size() - 1; i >= 0; i--) {
+			Method method = methods.get(i);
+			Notification annotation = method.getAnnotation(Notification.class);
+			if (annotation != null) {
+				if (annotation.requiredRoles() == null || annotation.requiredRoles().length == 0)
+					continue;
+				boolean hasRole = false;
+				for (String requiredRole : annotation.requiredRoles()) {
+					LOG.debug("Checking " + requiredRole + " of " + user);
+					if (Authorize.hasRole(user, requiredRole)) {
+						hasRole = true;
+						break;
+					}
+				}
+				if (!hasRole)
+					methods.remove(method);
+			}
+		}
+		return methods;
+	}
+
+	/**
+	 * @see com.devworks.projecttask.service.NotificationSubscriptionService#listAvailableNotifications()
+	 */
+	@Override
+	public List<Method> listAvailableNotifications() {
+		synchronized (this) {
+			if (this.availableNotifications == null) {
+				try {
+					this.availableNotifications = findNotifications(Class.forName(this.notificationsClass));
+				} catch (ClassNotFoundException e) {
+					LOG.error("Cannot list notifications: " + e.getMessage());
+				}
+			}
+		}
+		return this.availableNotifications;
+	}
+
+	/**
+	 * @param clazz
+	 * @return
+	 */
+	private List<Method> findNotifications(Class<?> clazz) {
+		LOG.info("Searching for @Notification in " + clazz);
+		List<Method> notificationMethods = new ArrayList<Method>();
+		Method[] methods = clazz.getMethods();
+		for (Method method : methods) {
+			Notification annotation = method.getAnnotation(Notification.class);
+			if (annotation != null) {
+				notificationMethods.add(method);
+			}
+		}
+		return notificationMethods;
+	}
+
+	/**
+	 * @see com.devworks.projecttask.service.NotificationSubscriptionService#getSubscriptions(com.vasworks.security.model.User)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public Hashtable<String, UserNotification> getSubscriptions(User user) {
+		Hashtable<String, UserNotification> userSubscriptions = new Hashtable<String, UserNotification>();
+		List<UserNotification> subscriptions = this.entityManager.createQuery("from UserNotification un where un.user=?").setParameter(1, user).getResultList();
+		for (UserNotification subscription : subscriptions) {
+			userSubscriptions.put(subscription.getEventName(), subscription);
+		}
+		return userSubscriptions;
+	}
+
+	@Override
+	@Transactional
+	public void updateSubscriptions(User user, Dictionary<String, UserNotification> subscriptions) {
+		Enumeration<String> keys = subscriptions.keys();
+		while (keys.hasMoreElements()) {
+			String key = keys.nextElement();
+			LOG.debug(key.getClass().getName() + " of value " + key);
+			UserNotification notification = subscriptions.get(key);
+			if (notification == null)
+				continue;
+
+			notification.setUser(user);
+
+			if (notification.getEventName() == null || notification.getEventName().length() == 0 || notification.isSubscribed() == false) {
+				this.entityManager.remove(notification);
+			} else {
+				notification.setEventName(key);
+				if (notification.getFormatString()!=null && notification.getFormatString().trim().length()==0)
+					notification.setFormatString(null);
+				if (notification.getId() == null)
+					this.entityManager.persist(notification);
+				else
+					this.entityManager.merge(notification);
+			}
+		}
+	}
+	
+
+	/**
+	 * @param list
+	 * @param eventNotificationType
+	 * @param member
+	 * @param source
+	 * @return
+	 */
+	@Override
+	@Transactional
+	@SuppressWarnings("unchecked")
+	public List<UserNotification> getUserNotifications(String eventName, EventNotificationType eventNotificationType, List<User> allowedSubscribers) {
+		// check local subscriptions to source
+		List<UserNotification> list = null;
+
+		if (eventNotificationType == EventNotificationType.MULTIPLE) {
+			if (allowedSubscribers==null || allowedSubscribers.size()==0) {
+				LOG.info("Will query for notifications, zero allowed subscribers");
+				return list;
+			}
+			list = this.entityManager.createQuery("from UserNotification un where un.eventName=:eventName and un.user in (:allowedSubscribers)").setParameter(
+					"eventName", eventName).setParameter("allowedSubscribers", allowedSubscribers).getResultList();
+		} else if (eventNotificationType == EventNotificationType.BROADCAST) {
+			list = this.entityManager.createQuery("from UserNotification un where un.eventName=:eventName").setParameter("eventName", eventName)
+					.getResultList();
+		} else if (eventNotificationType == EventNotificationType.SINGLE) {
+			list = this.entityManager.createQuery("from UserNotification un where un.eventName=:eventName and un.user=:singleUser").setParameter("eventName",
+					eventName).setParameter("singleUser", allowedSubscribers.get(0)).getResultList();
+		}
+
+		return list;
+	}
+
+}
