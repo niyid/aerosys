@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="operatorAction" class="com.vasworks.airliner.struts.OperatorAction">
+		<property name="operatorService" ref="operatorService" />
+	</bean>
+	
+	<bean id="paymentAction" scope="prototype" class="com.vasworks.airliner.struts.PaymentAction" parent="operatorAction" />
+	
+	<bean id="registerAction" scope="prototype" class="com.vasworks.airliner.struts.PersonnelAction" parent="operatorAction" />
+						
+	<bean id="searchAction" scope="prototype" class="com.vasworks.airliner.struts.SearchAction" parent="operatorAction" />
+			
+	<bean id="loginRedirectAction" scope="prototype" class="com.vasworks.airliner.struts.DashboardAction" parent="operatorAction" />
+		
+	<bean id="helpAction" scope="prototype" class="com.vasworks.airliner.struts.HelpAction" parent="operatorAction" />
+	
+	<bean id="documentFileViewAction" scope="prototype" class="com.vasworks.airliner.struts.DocumentFileViewAction" parent="operatorAction" />
+		
+	<bean id="profilePhotoAction" scope="prototype" class="com.vasworks.airliner.struts.ProfilePhotoAction" parent="operatorAction" />
+	
+	<bean id="operationScheduleAction" scope="prototype" class="com.vasworks.airliner.struts.OperationScheduleAction" parent="operatorAction" />
+			
+	<bean id="routeAction" scope="prototype" class="com.vasworks.airliner.struts.operator.RouteAction" parent="operatorAction" />
+			
+	<bean id="routePriceAction" scope="prototype" class="com.vasworks.airliner.struts.operator.RoutePriceAction" parent="operatorAction" />
+	
+	<bean id="flightAction" scope="prototype" class="com.vasworks.airliner.struts.operator.FlightAction" parent="operatorAction" />
+	
+	<bean id="flightManifestAction" scope="prototype" class="com.vasworks.airliner.struts.operator.FlightManifestAction" parent="operatorAction" />
+	
+	<bean id="flightScheduleAction" scope="prototype" class="com.vasworks.airliner.struts.operator.FlightScheduleAction" parent="operatorAction" />
+	
+	<bean id="flightSeatAction" scope="prototype" class="com.vasworks.airliner.struts.operator.SeatSelectionAction" parent="operatorAction" />
+	
+	<bean id="cashDepositAction" scope="prototype" class="com.vasworks.airliner.struts.operator.CashDepositAction" parent="operatorAction" />
+	
+	<bean id="flightCrewSelectionAction" scope="prototype" class="com.vasworks.airliner.struts.operator.FlightCrewSelectionAction" parent="operatorAction" />
+		
+	<bean id="crewActivityAction" scope="prototype" class="com.vasworks.airliner.struts.operator.CrewActivityAction" parent="operatorAction" />
+		
+	<bean id="profileAction" scope="prototype" class="com.vasworks.airliner.struts.operator.ProfileAction" parent="operatorAction" />
+		
+	<bean id="rebateAction" scope="prototype" class="com.vasworks.airliner.struts.operator.RebateAction" parent="operatorAction" />
+	
+	<bean id="reportAction" scope="prototype" class="com.vasworks.airliner.struts.operator.ReportAction" parent="operatorAction" />
+	
+	<bean id="taxAction" scope="prototype" class="com.vasworks.airliner.struts.operator.TaxAction" parent="operatorAction" />
+	
+	<bean id="invoiceAction" scope="prototype" class="com.vasworks.airliner.struts.operator.InvoiceAction" parent="operatorAction" />
+	
+	<bean id="contextTaxAction" scope="prototype" class="com.vasworks.airliner.struts.operator.ContextTaxAction" parent="operatorAction" />
+	
+	<bean id="activityReportAction" scope="prototype" class="com.vasworks.airliner.struts.operator.ActivityReportAction" parent="operatorAction" />
+	
+	<bean id="bookingAction" scope="prototype" class="com.vasworks.airliner.struts.operator.BookingAction" parent="operatorAction" />
+	
+	<bean id="reservationAction" scope="prototype" class="com.vasworks.airliner.struts.operator.ReservationAction" parent="operatorAction" />
+	
+	<bean id="checkinAction" scope="prototype" class="com.vasworks.airliner.struts.operator.CheckinAction" parent="operatorAction" />
+	
+	<bean id="remittanceAction" scope="prototype" class="com.vasworks.airliner.struts.operator.RemittanceAction" parent="operatorAction" />
+			
+	<bean id="trainingAction" scope="prototype" class="com.vasworks.airliner.struts.operator.TrainingAction" parent="operatorAction" />
+			
+	<bean id="trainingHandlerAction" scope="prototype" class="com.vasworks.airliner.struts.operator.TrainingHandlerAction" parent="operatorAction" />
+			
+	<bean id="customerSelectionAction" scope="prototype" class="com.vasworks.airliner.struts.operator.CustomerSelectionAction" parent="operatorAction" />
+			
+	<bean id="crewMemberAction" scope="prototype" class="com.vasworks.airliner.struts.setup.CrewMemberAction" parent="operatorAction" />
+			
+	<bean id="airlineAction" scope="prototype" class="com.vasworks.airliner.struts.setup.AirlineAction" parent="operatorAction" />
+			
+	<bean id="customerAction" scope="prototype" class="com.vasworks.airliner.struts.setup.CustomerAction" parent="operatorAction" />
+		
+	<bean id="agencyAction" scope="prototype" class="com.vasworks.airliner.struts.setup.AgencyAction" parent="operatorAction" />
+		
+	<bean id="insurerAction" scope="prototype" class="com.vasworks.airliner.struts.setup.InsurerAction" parent="operatorAction" />
+			
+	<bean id="authorityAction" scope="prototype" class="com.vasworks.airliner.struts.setup.AuthorityAction" parent="operatorAction" />
+		
+	<bean id="airlineEmployeeAction" scope="prototype" class="com.vasworks.airliner.struts.setup.AirlineEmployeeAction" parent="operatorAction" />
+		
+	<bean id="agencyEmployeeAction" scope="prototype" class="com.vasworks.airliner.struts.setup.AgencyEmployeeAction" parent="operatorAction" />
+		
+	<bean id="insurerEmployeeAction" scope="prototype" class="com.vasworks.airliner.struts.setup.InsurerEmployeeAction" parent="operatorAction" />
+			
+	<bean id="authorityEmployeeAction" scope="prototype" class="com.vasworks.airliner.struts.setup.AuthorityEmployeeAction" parent="operatorAction" />
+							
+	<bean id="airplaneAction" scope="prototype" class="com.vasworks.airliner.struts.setup.AirplaneAction" parent="operatorAction" />
+		
+	<bean id="airplaneMakeAction" scope="prototype" class="com.vasworks.airliner.struts.setup.AirplaneMakeAction" parent="operatorAction" />
+	
+	<bean id="airplaneModelAction" scope="prototype" class="com.vasworks.airliner.struts.setup.AirplaneModelAction" parent="operatorAction" />
+			
+	<bean id="airportAction" scope="prototype" class="com.vasworks.airliner.struts.setup.AirportAction" parent="operatorAction" />
+	
+	<bean id="cityAction" scope="prototype" class="com.vasworks.airliner.struts.setup.CityAction" parent="operatorAction" />
+	
+	<bean id="seatAction" scope="prototype" class="com.vasworks.airliner.struts.setup.SeatAction" parent="operatorAction" />
+			
+	<bean id="countryStateSelectionAction" scope="prototype" class="com.vasworks.airliner.struts.json.CountryStateSelectionAction" parent="operatorAction" />
+	
+	<bean id="countrySelectionAction" scope="prototype" class="com.vasworks.airliner.struts.json.CountrySelectionAction" parent="operatorAction" />
+												
+</beans>

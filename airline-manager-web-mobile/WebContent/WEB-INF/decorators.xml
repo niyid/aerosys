@@ -1,0 +1,38 @@
+<decorators defaultdir="/decorators">
+	<excludes>
+		<pattern>/40*.jsp</pattern>
+		<pattern>/*ajax=true*</pattern>
+		<pattern>/script/**</pattern>
+		<pattern>/css/**</pattern>
+		<pattern>/script/fckeditor/*?*</pattern>
+		<pattern>/struts/dojo/*</pattern>
+		<pattern>/resources/*</pattern>
+		<pattern>**/json/**</pattern>
+    	<pattern>/scripts/jquery/*</pattern>
+    </excludes>
+	<decorator name="admin" page="admin.jsp">
+		<pattern>/admin/*</pattern>
+	</decorator>
+	<decorator name="maps" page="maps.jsp">
+		<pattern>/mapLoc.*</pattern>
+	</decorator>	
+	<decorator name="dialog" page="dialog.jsp">
+		<pattern>/searchShowPhoto.*</pattern>
+		<pattern>**/photoDetail.*</pattern>
+		<pattern>**/abuseReport*.*</pattern>
+		<pattern>**/favorite*.*</pattern>
+		<pattern>**/profileMap*.*</pattern>
+		<pattern>**/offerRecord*.*</pattern>
+		<pattern>**/photoUpload*.*</pattern>
+	</decorator>		
+	<decorator name="plain" page="plain.jsp">
+		<pattern>/accessDenied.*</pattern>
+		<pattern>/application-locked.*</pattern>
+		<pattern>/doc/**</pattern>		
+		<pattern>/remind*</pattern>
+		<pattern>/accessDenied.*</pattern>
+	</decorator>
+	<decorator name="default" page="default.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+</decorators>

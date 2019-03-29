@@ -1,0 +1,904 @@
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>	
+	<package name="project-base-nosession" namespace="/" extends="default">				    	    	    
+	    
+	    <action name="searchFilter" class="searchAction">
+			<result name="input">/WEB-INF/jsp/ajax/searchFilter.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/searchFilter.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/searchFilter.jsp</result>
+	    </action>	    
+	    <action name="searchResult" class="searchAction" method="list">
+			<result name="input">/WEB-INF/jsp/ajax/searchResult.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/searchResult.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/searchResult.jsp</result>
+		</action>	       	 
+	    	    	    	    
+	    <action name="showSearchPage" class="searchAction">
+			<result name="input">/WEB-INF/jsp/search.jsp</result>
+			<result name="success">/WEB-INF/jsp/search.jsp</result>
+			<result name="error">/WEB-INF/jsp/search.jsp</result>
+	    </action>
+	    	    
+	   <action name="popupFlightDetails" class="searchAction" method="pick">
+			<result name="input">/WEB-INF/jsp/ajax/flightDetails.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/flightDetails.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/flightDetails.jsp</result>
+	    </action>
+	    	        	    	    	    	    
+	    <action name="showHelpPage" class="helpAction">
+			<result name="input">/WEB-INF/jsp/help.html</result>
+			<result name="success">/WEB-INF/jsp/help.html</result>
+			<result name="error">/WEB-INF/jsp/help.html</result>
+	    </action>
+	    			    	    
+	</package>
+
+	<package name="project-base-session" namespace="/" extends="default">				    	    	    
+		
+		<interceptors>
+			<interceptor name="sessionCheckInterceptor" class="com.vasworks.airliner.struts.SessionCheckInterceptor"/>
+			<interceptor-stack name="sessionValidationStack">
+		    	<interceptor-ref name="sessionCheckInterceptor" />
+		        <interceptor-ref name="vasworksStack" />
+			</interceptor-stack>
+		</interceptors> 
+		<default-interceptor-ref name="sessionValidationStack" />
+	   
+	   <action name="popupPaymentRecord" class="paymentAction">
+			<result name="input">/common/payment.jsp</result>
+			<result name="success">/common/payment.jsp</result>
+			<result name="error">/common/payment.jsp</result>
+	    </action>
+			    	    	    	    
+	   <action name="popupFlightDetails" class="searchAction" method="pick">
+			<result name="input">/WEB-INF/jsp/ajax/flightDetails.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/flightDetails.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/flightDetails.jsp</result>
+	    </action>
+	    	    
+	   <action name="popupFlightsSelect" class="searchAction" method="select">
+			<result name="input">/WEB-INF/jsp/ajax/bookingManifest.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingManifest.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingManifest.jsp</result>
+	    </action>
+	    	    	    
+	   <action name="bookingManifest" class="bookingAction">
+			<result name="input">/WEB-INF/jsp/ajax/bookingManifest.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingManifest.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingManifest.jsp</result>
+			<result name="confirm">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result>
+	    </action>
+	    	    	    
+	   <action name="bookingSummary" class="bookingAction" method="summary">
+			<result name="input">/WEB-INF/jsp/ajax/bookingSummary.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingSummary.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingSummary.jsp</result>
+	    </action>
+	    	    	    
+	   <action name="bookingConfirm" class="bookingAction">
+			<result name="input">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result>
+			<result name="summary" type="chain">bookingSummary</result>
+	    </action>
+	    	    	    	    	    
+<!-- 	   <action name="popupBookingConfirm" class="bookingAction"> -->
+<!-- 			<result name="input">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result> -->
+<!-- 			<result name="success">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result> -->
+<!-- 			<result name="error">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result> -->
+<!-- 			<result name="summary">/WEB-INF/jsp/ajax/bookingSummary.jsp</result> -->
+<!-- 	    </action> -->
+	    	    	    
+	   <action name="popupInvoicePayment" class="paymentAction">
+			<result name="input">/common/payment.jsp</result>
+			<result name="success">/common/payment.jsp</result>
+			<result name="error">/common/payment.jsp</result>
+	    </action>
+	    	    
+	   <action name="confirmBooking" class="bookingAction" method="load">
+			<result name="input">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result>
+	    </action>
+	
+	   <action name="popupLoadCheckin" class="checkinAction" method="load">
+			<result name="input">/WEB-INF/jsp/ajax/bookingCheckin.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingCheckin.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingCheckin.jsp</result>
+			<result name="complete">/common/checkinManifestComplete.jsp</result>
+	    </action>
+	
+	   <action name="popupSaveCheckin" class="checkinAction" method="save">
+			<result name="input">/common/checkinManifest.jsp</result>
+			<result name="success">/common/checkinManifestComplete.jsp</result>
+			<result name="error">/common/checkinManifest.jsp</result>
+	    </action>
+	
+	   <action name="popupConfirmCheckin" class="checkinAction" method="confirm">
+			<result name="input">/common/checkinManifest.jsp</result>
+			<result name="success">/common/checkinManifestConfirm.jsp</result>
+			<result name="error">/common/checkinManifest.jsp</result>
+	    </action>
+	
+	   <action name="popupSeatSelection" class="checkinAction" method="selectSeat">
+			<result name="input">/WEB-INF/jsp/ajax/bookingCheckin.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingCheckin.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingCheckin.jsp</result>
+	    </action>
+	
+	   <action name="popupSkipSeat" class="checkinAction" method="skip2Next">
+			<result name="input">/WEB-INF/jsp/ajax/bookingCheckin.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingCheckin.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingCheckin.jsp</result>
+	    </action>
+
+	   <action name="popupConfirmBooking" class="reservationAction" method="load">
+			<result name="input">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingConfirm.jsp</result>
+	    </action>
+	    
+	   <action name="popupCancelBooking" class="reservationAction" method="select">
+			<result name="input">/WEB-INF/jsp/ajax/bookingCancel.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingCancel.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingCancel.jsp</result>
+	    </action>
+	   <action name="popupUpdateBooking" class="reservationAction" method="select">
+			<result name="input">/WEB-INF/jsp/ajax/bookingUpdate.jsp</result>
+			<result name="success">/WEB-INF/jsp/ajax/bookingUpdate.jsp</result>
+			<result name="error">/WEB-INF/jsp/ajax/bookingUpdate.jsp</result>
+	    </action>
+	    
+	</package>
+	
+	<package name="operator" namespace="/operator" extends="default">
+		
+		<interceptors>
+			<interceptor name="sessionCheckInterceptor" class="com.vasworks.airliner.struts.SessionCheckInterceptor"/>
+			<interceptor-stack name="sessionValidationStack">
+		    	<interceptor-ref name="sessionCheckInterceptor" />
+		        <interceptor-ref name="vasworksStack" />
+			</interceptor-stack>
+		</interceptors> 
+		<default-interceptor-ref name="sessionValidationStack" />
+		
+    	<action name="customerSelection" class="customerSelectionAction">
+			<result name="input">/dialog/customerSelection.jsp</result>
+			<result name="success">/dialog/customerSelection.jsp</result>
+			<result name="error">/dialog/customerSelection.jsp</result>
+	    </action>
+    
+    	<action name="showInvoiceListPage" class="invoiceAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/billingInvoiceList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/billingInvoiceList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/billingInvoiceList.jsp</result>
+	    </action>
+    
+    	<action name="showRemittanceListPage" class="remittanceAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/tscRemittanceList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/tscRemittanceList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/tscRemittanceList.jsp</result>
+	    </action>
+    
+    	<action name="showPriceListPage" class="routePriceAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/routePriceList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/routePriceList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/routePriceList.jsp</result>
+	    </action>
+			    	    	    	    
+	    <action name="showCashDepositPage" class="cashDepositAction">
+			<result name="input">/WEB-INF/jsp/operator/cashDeposit.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/cashDeposit.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/cashDeposit.jsp</result>
+	    </action>
+			    	    	    	    
+	    <action name="showFlightSchedulePage" class="flightScheduleAction">
+			<result name="input">/WEB-INF/jsp/operator/flightSchedule.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/flightSchedule.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/flightSchedule.jsp</result>
+	    </action>
+			    	    	    	    
+	    <action name="showFlightPage" class="flightAction">
+			<result name="input">/WEB-INF/jsp/operator/flight.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/flight.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/flight.jsp</result>
+	    </action>
+    
+    	<action name="showCrewSelectionPage" class="flightCrewSelectionAction">
+			<result name="input">/WEB-INF/jsp/operator/crewSelectionList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/crewSelectionList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/crewSelectionList.jsp</result>
+	    </action>
+	    	    	    	    	    
+	    <action name="showActivityPage" class="crewActivityAction">
+			<result name="input">/WEB-INF/jsp/operator/activity.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/activity.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/activity.jsp</result>
+	    </action>
+	    	    	    	    	    
+	    <action name="showFlightSeatPage" class="flightSeatAction">
+			<result name="input">/WEB-INF/jsp/operator/flightSeat.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/flightSeat.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/flightSeat.jsp</result>
+	    </action>
+	        	    	    	    
+	    <action name="showRoutePage" class="routeAction">
+			<result name="input">/WEB-INF/jsp/operator/route.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/route.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/route.jsp</result>
+	    </action>
+	        	    	    	    
+	    <action name="showRoutePricePage" class="routeAction">
+			<result name="input">/WEB-INF/jsp/operator/routePrice.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/routePrice.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/routePrice.jsp</result>
+	    </action>
+	    	        	    	    	    
+	    <action name="showRebatePage" class="rebateAction">
+			<result name="input">/WEB-INF/jsp/operator/rebate.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/rebate.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/rebate.jsp</result>
+	    </action>
+	    	    	    	    
+	    <action name="showTaxPage" class="taxAction">
+			<result name="input">/WEB-INF/jsp/operator/tax.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/tax.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/tax.jsp</result>
+	    </action>
+	    	    	    	    
+	    <action name="showContextTaxPage" class="contextTaxAction">
+			<result name="input">/WEB-INF/jsp/operator/contextTax.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/contextTax.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/contextTax.jsp</result>
+	    </action>
+	    	    	    	    
+	    <action name="showReservationPage" class="reservationAction">
+			<result name="input">/WEB-INF/jsp/operator/reservation.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/reservation.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/reservation.jsp</result>
+	    </action>
+	    	    	    	    
+	    <action name="showBookingPage" class="bookingAction">
+			<result name="input">/WEB-INF/jsp/operator/booking.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/booking.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/booking.jsp</result>
+	    </action>
+	    	    	    	    	    
+	    <action name="showReportPage" class="activityReportAction">
+			<result name="input">/WEB-INF/jsp/operator/report.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/report.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/report.jsp</result>
+	    </action>
+	    	    	    	    	    
+	    <action name="showActivityReportPage" class="activityReportAction">
+			<result name="input">/WEB-INF/jsp/operator/report.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/report.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/report.jsp</result>
+	    </action>
+	    	    	    	    	    
+	    <action name="showCrewMemberProfile" class="crewMemberAction" method="view">
+			<result name="input">/WEB-INF/jsp/operator/crewMemberDetails.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/crewMemberDetails.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/crewMemberDetails.jsp</result>
+	    </action>
+	        	   	    	    	    	    
+	    <action name="showSchedule">
+			<result name="input">/WEB-INF/jsp/operator/schedule.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/schedule.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/schedule.jsp</result>
+	    </action>
+	     	    	    	    
+	</package>
+	
+	<package name="setup" namespace="/setup" extends="default">
+		
+		<interceptors>
+			<interceptor name="sessionCheckInterceptor" class="com.vasworks.airliner.struts.SessionCheckInterceptor"/>
+			<interceptor-stack name="sessionValidationStack">
+		    	<interceptor-ref name="sessionCheckInterceptor" />
+		        <interceptor-ref name="vasworksStack" />
+			</interceptor-stack>
+		</interceptors> 
+		<default-interceptor-ref name="sessionValidationStack" />	    	    	    	    
+	    	    	    	    
+	    <action name="showCityPage" class="cityAction">
+			<result name="input">/WEB-INF/jsp/setup/city.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/city.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/city.jsp</result>
+	    </action>
+	    	    	    	    	    	    
+	    <action name="showAirlinePage" class="airlineAction">
+			<result name="input">/WEB-INF/jsp/setup/airline.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/airline.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/airline.jsp</result>
+	    </action>
+	    	    	    	    	    	    	    
+	    <action name="showCustomerPage" class="customerAction">
+			<result name="input">/WEB-INF/jsp/setup/customer.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/customer.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/customer.jsp</result>
+	    </action>
+	    	    	    	    	    	    
+	    <action name="showAgencyPage" class="agencyAction">
+			<result name="input">/WEB-INF/jsp/setup/agency.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/agency.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/agency.jsp</result>
+	    </action>
+	    	    	    	    	    	    	    
+	    <action name="showInsurerPage" class="insurerAction">
+			<result name="input">/WEB-INF/jsp/setup/insurer.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/insurer.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/insurer.jsp</result>
+	    </action>
+	    	    	    	    	    	    	    
+	    <action name="showAuthorityPage" class="authorityAction">
+			<result name="input">/WEB-INF/jsp/setup/authority.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/authority.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/authority.jsp</result>
+	    </action>
+	 	    	    	    	    	    	    
+	    <action name="showCrewMemberPage" class="crewMemberAction">
+			<result name="input">/WEB-INF/jsp/setup/crewMember.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/crewMember.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/crewMember.jsp</result>
+	    </action>
+	       	    	    	    	    	    
+	    <action name="showAirlineEmployeePage" class="airlineEmployeeAction">
+			<result name="input">/WEB-INF/jsp/setup/airlineEmployee.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/airlineEmployee.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/airlineEmployee.jsp</result>
+	    </action>
+	    	    	    	    	    	    
+	    <action name="showAgencyEmployeePage" class="agencyEmployeeAction">
+			<result name="input">/WEB-INF/jsp/setup/agencyEmployee.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/agencyEmployee.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/agencyEmployee.jsp</result>
+	    </action>
+	    	    	    	    	    	    	    
+	    <action name="showInsurerEmployeePage" class="insurerEmployeeAction">
+			<result name="input">/WEB-INF/jsp/setup/insurerEmployee.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/insurerEmployee.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/insurerEmployee.jsp</result>
+	    </action>
+	    	    	    	    	    	    	    
+	    <action name="showAuthorityEmployeePage" class="authorityEmployeeAction">
+			<result name="input">/WEB-INF/jsp/setup/authorityEmployee.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/authorityEmployee.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/authorityEmployee.jsp</result>
+	    </action>
+	    	    	    	    	    	    	    
+	    <action name="showTrainerPage" class="trainingHandlerAction">
+			<result name="input">/WEB-INF/jsp/setup/trainer.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/trainer.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/trainer.jsp</result>
+	    </action>
+		    	    	    	    	    	    	    
+	    <action name="showTrainingPage" class="trainingAction">
+			<result name="input">/WEB-INF/jsp/setup/training.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/training.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/training.jsp</result>
+	    </action>
+	        	    	    	    	    	    	    	    
+	    <action name="showAirportPage" class="airportAction">
+			<result name="input">/WEB-INF/jsp/setup/airport.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/airport.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/airport.jsp</result>
+	    </action>
+	    	    	    	    	    
+	    <action name="showAirplanePage" class="airplaneAction">
+			<result name="input">/WEB-INF/jsp/setup/airplane.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/airplane.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/airplane.jsp</result>
+	    </action>
+	    	    	    	    	    
+	    <action name="showAirplaneMakePage" class="airplaneMakeAction">
+			<result name="input">/WEB-INF/jsp/setup/airplaneMake.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/airplaneMake.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/airplaneMake.jsp</result>
+	    </action>
+	    	    	    	    	    
+	    <action name="showAirplaneModelPage" class="airplaneModelAction">
+			<result name="input">/WEB-INF/jsp/setup/airplaneModel.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/airplaneModel.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/airplaneModel.jsp</result>
+	    </action>
+	    	    	    	    	    	    	    
+	    <action name="showSeatPage" class="seatAction">
+			<result name="input">/WEB-INF/jsp/setup/seat.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/seat.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/seat.jsp</result>
+	    </action>
+	    	    	    	    	    
+	</package>
+		
+	<package name="operator/ajax" namespace="/operator/ajax" extends="operator">	    	    	    
+
+	   <action name="flightRecord" class="flightAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/flightRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/flightRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/flightRecord.jsp</result>
+	    </action>
+	   <action name="flightList" class="flightAction" method="search">
+			<result name="input">/WEB-INF/jsp/operator/ajax/flightList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/flightList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/flightList.jsp</result>
+	    </action>
+
+	   <action name="flightScheduleRecord" class="flightScheduleAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/flightScheduleRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/flightScheduleRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/flightScheduleRecord.jsp</result>
+	    </action>
+	   <action name="flightScheduleList" class="flightScheduleAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/flightScheduleList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/flightScheduleList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/flightScheduleList.jsp</result>
+	    </action>
+
+	   <action name="activityRecord" class="crewActivityAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/activityRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/activityRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/activityRecord.jsp</result>
+	    </action>
+	   <action name="activityList" class="crewActivityAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/activityList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/activityList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/activityList.jsp</result>
+	    </action>
+
+	   <action name="flightSeatLayout" class="flightSeatAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/flightSeatLayout.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/flightSeatLayout.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/flightSeatLayout.jsp</result>
+	    </action>
+
+	   <action name="flightSeatSelection" class="flightSeatAction" method="select">
+			<result name="input">/WEB-INF/jsp/operator/ajax/flightSeatLayout.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/flightSeatLayout.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/flightSeatLayout.jsp</result>
+	    </action>
+	    
+	   <action name="routeRecord" class="routeAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/routeRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/routeRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/routeRecord.jsp</result>
+	    </action>
+
+	   <action name="invoiceList" class="invoiceAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/invoiceList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/invoiceList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/invoiceList.jsp</result>
+	    </action>
+
+	   <action name="remittanceList" class="remittanceAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/remittanceList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/remittanceList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/remittanceList.jsp</result>
+	    </action>
+	    
+	   <action name="routeList" class="routeAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/routeList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/routeList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/routeList.jsp</result>
+	    </action>
+	    
+	   <action name="routePriceRecord" class="routePriceAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/routePriceRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/routePriceRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/routePriceRecord.jsp</result>
+	    </action>
+	   <action name="routePriceList" class="routePriceAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/routePriceList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/routePriceList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/routePriceList.jsp</result>
+	    </action>
+	   <action name="routePriceList2" class="routePriceAction" method="listPrices">
+			<result name="input">/WEB-INF/jsp/operator/ajax/routePriceList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/routePriceList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/routePriceList.jsp</result>
+	    </action>
+
+	   <action name="popupNewRoutePrice" class="routePriceAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/routePriceNew.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/routePriceNew.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/routePriceNew.jsp</result>
+	    </action>
+
+	   <action name="popupEditRoutePrice" class="routePriceAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/routePriceEdit.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/routePriceEdit.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/routePriceEdit.jsp</result>
+	    </action>
+	   	    
+	   <action name="cashDepositRecord" class="cashDepositAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/cashDepositRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/cashDepositRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/cashDepositRecord.jsp</result>
+	    </action>
+	   <action name="cashDepositList" class="cashDepositAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/cashDepositList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/cashDepositList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/cashDepositList.jsp</result>
+	    </action>
+	   	    
+	   <action name="rebateRecord" class="rebateAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/rebateRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/rebateRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/rebateRecord.jsp</result>
+	    </action>
+	   <action name="rebateList" class="rebateAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/rebateList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/rebateList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/rebateList.jsp</result>
+	    </action>
+	   	    
+	   <action name="taxRecord" class="taxAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/taxRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/taxRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/taxRecord.jsp</result>
+	    </action>
+	   <action name="taxList" class="taxAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/taxList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/taxList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/taxList.jsp</result>
+	    </action>
+
+	   <action name="contextTaxRecord" class="contextTaxAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/contextTaxRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/contextTaxRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/contextTaxRecord.jsp</result>
+	    </action>
+	   <action name="contextTaxList" class="contextTaxAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/contextTaxList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/contextTaxList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/contextTaxList.jsp</result>
+	    </action>
+	   <action name="bookingRecord" class="bookingAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/bookingRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/bookingRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/bookingRecord.jsp</result>
+	    </action>
+	   <action name="bookingList" class="bookingAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/bookingList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/bookingList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/bookingList.jsp</result>
+	    </action>
+	   <action name="reservationList" class="reservationAction" method="list">
+			<result name="input">/WEB-INF/jsp/operator/ajax/reservationList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/reservationList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/reservationList.jsp</result>
+	    </action>
+	   
+	   <action name="reportFilter" class="reportAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/reportFilter.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/reportFilter.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/reportFilter.jsp</result>
+	    </action>
+
+	   <action name="flightManifest" class="flightManifestAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/flightList.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/flightList.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/flightList.jsp</result>
+			<result name="download" type="stream">
+				<param name="contentType">contentType</param> 
+				<param name="inputName">inputStream</param> 
+				<param name="contentDisposition">contentDisposition</param> 
+				<param name="bufferSize">1024</param>
+			</result> 
+	    </action>
+
+	   <action name="reportResult" class="activityReportAction" method="search">
+			<result name="input">/WEB-INF/jsp/operator/ajax/reportResult.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/reportResult.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/reportResult.jsp</result>
+            <result name="xlsx" type="chain">reportXlsxResult</result>
+			<result name="download" type="stream">
+				<param name="contentType">contentType</param> 
+				<param name="inputName">inputStream</param> 
+				<param name="contentDisposition">contentDisposition</param> 
+				<param name="bufferSize">1024</param>
+			</result> 
+	    </action>
+
+	   <action name="reportXlsxResult" class="activityReportAction" method="xlsxDl">
+			<result name="input">/WEB-INF/jsp/operator/ajax/reportResult.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/reportResult.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/reportResult.jsp</result>
+			<result name="download" type="stream">
+				<param name="contentType">contentType</param> 
+				<param name="inputName">inputStream</param> 
+				<param name="contentDisposition">contentDisposition</param> 
+				<param name="bufferSize">1024</param>
+			</result> 
+	    </action>
+		    	    	    	    
+	    <action name="listSchedule" class="operationScheduleAction">
+			<result name="input">/WEB-INF/jsp/operator/ajax/scheduleView.jsp</result>
+			<result name="success">/WEB-INF/jsp/operator/ajax/scheduleView.jsp</result>
+			<result name="error">/WEB-INF/jsp/operator/ajax/scheduleView.jsp</result>
+	    </action>	    
+	   	   	   	   	   	    	
+    </package>
+		
+	<package name="setup/ajax" namespace="/setup/ajax" extends="setup">	    	    	    
+
+	   <action name="cityRecord" class="cityAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/cityRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/cityRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/cityRecord.jsp</result>
+	    </action>
+	   <action name="cityList" class="cityAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/cityList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/cityList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/cityList.jsp</result>
+	    </action>
+	    
+	    <action name="airlineRecord" class="airlineAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airlineRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airlineRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airlineRecord.jsp</result>
+	    </action>
+	   <action name="airlineList" class="airlineAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airlineList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airlineList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airlineList.jsp</result>
+	    </action>
+	    
+	    <action name="customerRecord" class="customerAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/customerRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/customerRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/customerRecord.jsp</result>
+	    </action>
+	   <action name="customerList" class="customerAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/customerList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/customerList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/customerList.jsp</result>
+	    </action>
+	    
+	    <action name="agencyRecord" class="agencyAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/agencyRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/agencyRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/agencyRecord.jsp</result>
+	    </action>
+	   <action name="agencyList" class="agencyAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/agencyList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/agencyList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/agencyList.jsp</result>
+	    </action>
+	    
+	    <action name="insurerRecord" class="insurerAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/insurerRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/insurerRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/insurerRecord.jsp</result>
+	    </action>
+	   <action name="insurerList" class="insurerAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/insurerList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/insurerList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/insurerList.jsp</result>
+	    </action>
+	    
+	    <action name="authorityRecord" class="authorityAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/authorityRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/authorityRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/authorityRecord.jsp</result>
+	    </action>
+	   <action name="authorityList" class="authorityAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/authorityList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/authorityList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/authorityList.jsp</result>
+	    </action>
+	    
+	    <action name="crewMemberRecord" class="crewMemberAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/crewMemberRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/crewMemberRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/crewMemberRecord.jsp</result>
+	    </action>
+	   <action name="crewMemberList" class="crewMemberAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/crewMemberList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/crewMemberList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/crewMemberList.jsp</result>
+	    </action>
+	    	    
+	    <action name="airlineEmployeeRecord" class="airlineEmployeeAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airlineEmployeeRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airlineEmployeeRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airlineEmployeeRecord.jsp</result>
+	    </action>
+	   <action name="airlineEmployeeList" class="airlineEmployeeAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airlineEmployeeList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airlineEmployeeList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airlineEmployeeList.jsp</result>
+	    </action>
+	    
+	    <action name="agencyEmployeeRecord" class="agencyEmployeeAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/agencyEmployeeRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/agencyEmployeeRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/agencyEmployeeRecord.jsp</result>
+	    </action>
+	   <action name="agencyEmployeeList" class="agencyEmployeeAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/agencyEmployeeList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/agencyEmployeeList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/agencyEmployeeList.jsp</result>
+	    </action>
+	    
+	    <action name="insurerEmployeeRecord" class="insurerEmployeeAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/insurerEmployeeRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/insurerEmployeeRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/insurerEmployeeRecord.jsp</result>
+	    </action>
+	   <action name="insurerEmployeeList" class="insurerEmployeeAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/insurerEmployeeList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/insurerEmployeeList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/insurerEmployeeList.jsp</result>
+	    </action>
+	    
+	    <action name="authorityEmployeeRecord" class="authorityEmployeeAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/authorityEmployeeRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/authorityEmployeeRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/authorityEmployeeRecord.jsp</result>
+	    </action>
+	   <action name="authorityEmployeeList" class="authorityEmployeeAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/authorityEmployeeList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/authorityEmployeeList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/authorityEmployeeList.jsp</result>
+	    </action>
+	   	    	   	   	   
+	    <action name="trainerRecord" class="trainingHandlerAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/trainerRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/trainerRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/trainerRecord.jsp</result>
+	    </action>
+	   <action name="trainerList" class="trainingHandlerAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/trainerList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/trainerList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/trainerList.jsp</result>
+	    </action>
+	   	    	   	   	   
+	    <action name="trainingRecord" class="trainingAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/trainingRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/trainingRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/trainingRecord.jsp</result>
+	    </action>
+	   <action name="trainingList" class="trainingAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/trainingList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/trainingList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/trainingList.jsp</result>
+	    </action>
+	    	    	   	    	   	   	   
+	    <action name="airportRecord" class="airportAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airportRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airportRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airportRecord.jsp</result>
+	    </action>
+	   <action name="airportList" class="airportAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airportList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airportList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airportList.jsp</result>
+	    </action>
+	   
+	    <action name="airplaneRecord" class="airplaneAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airplaneRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airplaneRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airplaneRecord.jsp</result>
+	    </action>
+	   <action name="airplaneList" class="airplaneAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airplaneList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airplaneList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airplaneList.jsp</result>
+	    </action>
+	   
+	    <action name="airplaneMakeRecord" class="airplaneMakeAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airplaneMakeRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airplaneMakeRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airplaneMakeRecord.jsp</result>
+	    </action>
+	   <action name="airplaneMakeList" class="airplaneMakeAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airplaneMakeList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airplaneMakeList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airplaneMakeList.jsp</result>
+	    </action>
+	   	   
+	    <action name="airplaneModelRecord" class="airplaneModelAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airplaneModelRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airplaneModelRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airplaneModelRecord.jsp</result>
+	    </action>
+	   <action name="airplaneModelList" class="airplaneModelAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/airplaneModelList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/airplaneModelList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/airplaneModelList.jsp</result>
+	    </action>
+	   	   
+	    <action name="seatRecord" class="seatAction">
+			<result name="input">/WEB-INF/jsp/setup/ajax/seatRecord.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/seatRecord.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/seatRecord.jsp</result>
+	    </action>
+	   <action name="seatList" class="seatAction" method="list">
+			<result name="input">/WEB-INF/jsp/setup/ajax/seatList.jsp</result>
+			<result name="success">/WEB-INF/jsp/setup/ajax/seatList.jsp</result>
+			<result name="error">/WEB-INF/jsp/setup/ajax/seatList.jsp</result>
+	    </action>
+	   	   	   	   	   	    	
+    </package>
+					
+	<package name="download" namespace="/download" extends="default">
+		<action name="fileView" class="documentFileViewAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/octet-stream</param>
+		  		<param name="inputName">inputStream</param>
+		  		<param name="contentDisposition">contentDisposition</param>
+		  		<param name="bufferSize">2048</param>
+			</result>
+	   	</action>		    
+						
+		<action name="photograph" class="profilePhotoAction">
+			<result name="success" type="stream">
+				<param name="contentType">contentType</param> 
+				<param name="inputName">inputStream</param> 
+				<param name="contentDisposition">contentDisposition</param> 
+				<param name="bufferSize">1024</param>
+			</result> 
+		</action>	
+	</package>
+	
+	<package name="upload" namespace="/upload" extends="operator">
+		<interceptors>
+			<interceptor-stack name="photoUploadStack">
+				<interceptor-ref name="exception" />
+				<interceptor-ref name="alias" />
+				<interceptor-ref name="servletConfig" />
+				<interceptor-ref name="prepare" />
+				<interceptor-ref name="i18n" />
+				<interceptor-ref name="chain" />
+				<interceptor-ref name="debugging" />
+				<interceptor-ref name="profiling" />
+				<interceptor-ref name="scopedModelDriven" />
+				<interceptor-ref name="modelDriven" />
+				<interceptor-ref name="fileUpload">
+					<param name="maximumSize">102400</param>
+					<param name="allowedTypes">image/jpeg, image/pjpeg</param>
+				</interceptor-ref>
+				<interceptor-ref name="checkbox" />
+				<interceptor-ref name="staticParams" />
+				<interceptor-ref name="actionMappingParams" />
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*</param>
+				</interceptor-ref>
+				<interceptor-ref name="conversionError" />
+				<interceptor-ref name="validation">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="workflow">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+	    	    	    
+	    <action name="photoUpload" class="photoUploadAction">
+	        <interceptor-ref name="photoUploadStack" />
+			<result name="input">/WEB-INF/jsp/passenger/ajax/photoUpload.jsp</result>
+			<result name="success">/WEB-INF/jsp/passenger/ajax/photoUpload.jsp</result>
+			<result name="error">/WEB-INF/jsp/passenger/ajax/photoUpload.jsp</result>
+	    </action>
+	    	    	    
+	    <action name="itemPhotoUpload" class="itemPhotoUploadAction">
+	        <interceptor-ref name="photoUploadStack" />
+			<result name="input">/WEB-INF/jsp/passenger/ajax/itemPhotoUpload.jsp</result>
+			<result name="success">/WEB-INF/jsp/passenger/ajax/itemPhotoUpload.jsp</result>
+			<result name="error">/WEB-INF/jsp/passenger/ajax/itemPhotoUpload.jsp</result>
+	    </action>    	    
+	</package>
+		
+	<package name="json" namespace="/json" extends="operator, json-default">
+	    <action name="listStateByCountry" class="countryStateSelectionAction">
+			<result name="success" type="json" />
+	    </action>	    	    
+	    <action name="listCountries" class="countrySelectionAction">
+			<result name="success" type="json" />
+	    </action>	    	    
+	</package>
+
+</struts>
